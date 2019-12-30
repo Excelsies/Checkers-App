@@ -177,8 +177,13 @@ class App extends Component {
   }
 
   flipKing(newIndex) {
-    let index = "checker" + newIndex;
-    document.getElementById(index).style.transform = "rotateY(360deg)";
+    if (this.state.flipKing) {
+      this.setState({
+        flipKing: false
+      });
+      let index = "checker" + newIndex;
+      document.getElementById(index).style.transform = "rotateY(360deg)";
+    }
   }
 
   setNewPosition(newIndex) {
@@ -262,13 +267,13 @@ class App extends Component {
       document.getElementById(this.state.selectedIndex).style.backgroundColor =
         "#252525";
     }
-
     this.checkWinner();
   }
 
   handleClick(index) {
     if (this.state.hasClicked && !this.state.winner) {
       this.secondClick(index);
+      this.flipKing(index);
     } else {
       if (
         (this.state.checkerArray[index] === this.state.player ||
@@ -284,16 +289,8 @@ class App extends Component {
         }
       }
     }
+    this.flipKing(index);
     this.checkWinner();
-  }
-
-  checkKing(index) {
-    if (this.state.flipKing) {
-      this.setState({
-        flipKing: false
-      });
-      this.flipKing(index);
-    }
   }
 
   setPlayer(player) {
@@ -378,7 +375,6 @@ class App extends Component {
         key={index}
         id={index}
         onClick={() => {
-          this.checkKing(index);
           this.handleClick(index);
         }}
       >
